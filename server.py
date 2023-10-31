@@ -38,7 +38,8 @@ def query_tags():
      Request:
      - Method: GET
      - Parameters:
-        - tag: <tag_to_query (String)>
+        - tag: <tag_to_query>
+        - k(optional): <num_of_result>
 
      Returns:
      - 200 OK with JSON data: {'message': 'ok', 'code': 200, 'data': {'tags': <similar_tags (List[String])>}}
@@ -46,7 +47,8 @@ def query_tags():
      """
     try:
         query_tag = request.args.get('tag')
-        similar_tags = milvus_dao.query_similar_tags(tag=query_tag)
+        query_k = request.args.get('k', 5)
+        similar_tags = milvus_dao.query_similar_tags(tag=query_tag, k=int(query_k))
     except Exception as e:
         return jsonify({'message': e, 'code': 400}),
     return jsonify({'message': 'ok', 'code': 200, 'data': {'tags': similar_tags}})

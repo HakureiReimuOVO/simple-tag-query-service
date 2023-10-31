@@ -1,12 +1,10 @@
 # A simple milvus service for tag similarity search
 
-A service used in [this project](https://github.com/1772692215/ist_data_management.git).
+A simple service used in [this project](https://github.com/1772692215/ist_data_management.git).
 
-Database: [milvus](https://milvus.io)
-
-Service port: 5000
-
-Dependency:
+- Database: [milvus](https://milvus.io)
+- Service port: 5000
+- Dependency:
 
 ```
 Flask==2.2.3
@@ -76,7 +74,8 @@ def query_tags():
      Request:
      - Method: GET
      - Parameters:
-        - tag: <tag_to_query (String)>
+        - tag: <tag_to_query>
+        - k(optional): <num_of_result>
 
      Returns:
      - 200 OK with JSON data: {'message': 'ok', 'code': 200, 'data': {'tags': <similar_tags (List[String])>}}
