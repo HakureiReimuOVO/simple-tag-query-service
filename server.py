@@ -78,7 +78,7 @@ def llm_interaction():
         ans, code, log = llm_exec.exec(data["demand"], data["domain"])
     except Exception as e:
         return jsonify({'message': e, 'code': 400}),
-    return jsonify({'message': 'ok', 'code': 200, 'data': {"LLMAnswer": ans, "LLMCode": code, "queryLog": log}})
+    return jsonify({'message': 'ok', 'code': 200, 'data': {"llmAnswer": ans, "llmCode": code, "queryLog": log}})
     
 
 if __name__ == '__main__':
