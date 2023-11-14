@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
-from dao import MilvusDAO
+# from dao import MilvusDAO
+from llm import llm_exec
 
 app = Flask(__name__)
 
@@ -54,6 +55,32 @@ def query_tags():
     return jsonify({'message': 'ok', 'code': 200, 'data': {'tags': similar_tags}})
 
 
+@app.route('/llm', methods=['POST'])
+def llm_interaction():
+    '''
+    interaction with LLM.
+
+    Request:
+    - Method: POST
+    - Content-Type: application/json
+    - JSON Data:
+        {
+            "demand": <demand_to_LLM (String)>
+            "domain": <LLM_code_used_in (String)>
+        }
+
+    Returns:
+    - 200 OK with JSON data: {'message': 'ok', 'code': 200, 'data': {'LLM_answer': <LLM_returned_answer (String)>, "LLM_code": <LLM_returned_answer (String)>, "query_log": <completed_query_log>}}
+    - 400 Bad Request with JSON data: {'message': <error_message (String)>, 'code': 400}
+    '''
+    try:
+        data = request.get_json()
+        ans, code, log = llm_exec.exec(data["demand"], data["domain"])
+    except Exception as e:
+        return jsonify({'message': e, 'code': 400}),
+    return jsonify({'message': 'ok', 'code': 200, 'data': {"LLMAnswer": ans, "LLMCode": code, "queryLog": log}})
+    
+
 if __name__ == '__main__':
-    milvus_dao = MilvusDAO()
+    # milvus_dao = MilvusDAO()
     app.run()
