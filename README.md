@@ -18,7 +18,7 @@ transformers==4.30.2
 
 ## Usage
 
-To configure the database profile, edit it in **dao.py**:
+To configure the database profile, edit it in `dao.py`:
 
 ```python
 HOST = "localhost"
