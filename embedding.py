@@ -18,9 +18,6 @@ def embed_attribute(attribute):
 
     return embeddings
 
-#
-# if __name__ == '__main__':
-#     # text = 'Hello, how are you? My name is qianqidan. Can you tell me your name?'
-#     text = ['Hello, how are you?', 'My name is qqd.', 'Can you tell me your name?']
-#     embed = embed_attribute(text)
-#     print(embed)
+
+if __name__ == '__main__':
+    pass
