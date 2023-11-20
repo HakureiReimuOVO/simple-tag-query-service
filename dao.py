@@ -78,7 +78,7 @@ class MilvusDAO:
         print("Success!")
         return True
 
-    def query_models_by_fields(self, fields, k=10):
+    def query_models_by_fields(self, fields, model_num=10):
         res = []
         field_str = ', '.join(fields)
         print(f"Querying models by field({field_str})...", end="")
@@ -95,7 +95,7 @@ class MilvusDAO:
             "params": {"nprobe": 128},
         }
         start_time = time.time()
-        result = self.collection.search(query_attribute, "embedding", search_params, limit=k,
+        result = self.collection.search(query_attribute, "embedding", search_params, limit=model_num,
                                         output_fields=["id", "fields", "tags"])
         end_time = time.time()
         print("Success! Query latency:{:.4f}s".format(end_time - start_time))
