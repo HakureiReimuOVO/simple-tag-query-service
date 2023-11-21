@@ -33,6 +33,13 @@ To start the server, run:
 python server.py
 ```
 
+To init the database, run:
+
+```shell
+python init.py
+```
+
+
 To reset the database, run:
 
 ```shell
@@ -53,4 +60,11 @@ def embed_model():
 ```python
 @app.route('/models', methods=['GET'])
 def query_models():
+```
+
+### Query recommended tags
+
+```python
+@app.route('/models/tags', methods=['GET'])
+def query_model_tags():
 ```
