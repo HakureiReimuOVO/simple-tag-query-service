@@ -8,7 +8,6 @@ A Python service used in [this project](https://github.com/1772692215/ist_data_m
 
 ```
 Flask==2.2.3
-numpy==1.21.4
 numpy==1.21.2
 pymilvus==2.3.1
 torch==1.10.0
@@ -25,7 +24,7 @@ HOST = "localhost"
 PORT = "19530"
 ```
 
-You **don't** need to start the milvus database before you run this service.
+You **need** to start the milvus database before you run this service.
 
 To start the server, run:
 

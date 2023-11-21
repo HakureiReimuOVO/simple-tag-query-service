@@ -1,3 +1,8 @@
+import os
+
+# Use domestic HuggingFace mirror site
+os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
+
 from flask import Flask, jsonify, request
 from dao import MilvusDAO
 from service import recommend_tags
