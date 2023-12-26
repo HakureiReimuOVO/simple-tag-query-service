@@ -45,6 +45,20 @@ To reset the database, run:
 python reset.py
 ```
 
+## Deploy in Docker
+
+To package into Docker image, run:
+
+```shell
+docker buildx build --platform linux/amd64 -t model-embedding-service-amd64 .
+```
+
+To run Docker image, run: 
+
+```shell
+docker run -d --name python-service -p 6000:5000 -e "MILVUS_URL=milvus-standalone" -e "MILVUS_PORT=19530" --network milvus model-embedding-service-amd64
+```
+
 ## APIs
 
 ### Embed model
