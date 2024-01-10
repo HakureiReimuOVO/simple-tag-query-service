@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-# from dao import MilvusDAO
+from dao import MilvusDAO
 from llm import llm_exec
 
 app = Flask(__name__)
@@ -82,5 +82,5 @@ def llm_interaction():
     
 
 if __name__ == '__main__':
-    # milvus_dao = MilvusDAO()
+    milvus_dao = MilvusDAO()
     app.run()
