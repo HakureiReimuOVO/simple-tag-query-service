@@ -161,7 +161,7 @@ class c2pg():
                 retry_count = 0
                 while retry_count <= max_retries:
                     try:
-                        result = func(self=self, *args, **kwargs)
+                        result = func(self, *args, **kwargs)
                         break
                     except (Exception, psycopg2.DatabaseError) as e:
                         print(f"Exception: {e}")

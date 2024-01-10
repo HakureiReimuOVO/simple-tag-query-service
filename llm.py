@@ -160,7 +160,7 @@ class llm_exec():
         #     matches[idx] =  matches[idx][matches[idx].find('\n'):]
         try:
             if pattern == (r'```sql(.*?)```'):
-                return matches[0].replace("\n", "").replace("\n", "")
+                return matches[0].strip("\n")
             else:
                 return matches[0].strip("'")
         except Exception as e:
@@ -234,8 +234,8 @@ class llm_exec():
         log += "\nCODE_ANSWER: \n" + result + "\n--------------\n"
         a = c2pg(1)
         sqlExecuteResult = a.query_check(self.process(result))
-        log += "sqlExecuteResult: \n" + sqlExecuteResult + "\n--------------\n"
-        return result, self.process(result), log, sqlExecuteResult
+        log += "sqlExecuteResult: \n" + str(sqlExecuteResult) + "\n--------------\n"
+        return result, self.process(result), log, str(sqlExecuteResult)
     
 if __name__ == "__main__":
     llmAnswer, sqlcode, log, sqlExecuteResult = llm_exec.exec("数据表里有关船引擎的碳排放量平均值是多少", "data_management")
