@@ -70,15 +70,15 @@ def llm_interaction():
         }
 
     Returns:
-    - 200 OK with JSON data: {'message': 'ok', 'code': 200, 'data': {'LLM_answer': <LLM_returned_answer (String)>, "LLM_code": <LLM_returned_answer (String)>, "query_log": <completed_query_log>}}
+    - 200 OK with JSON data: {'message': 'ok', 'code': 200, 'data': {'LLM_answer': <LLM_returned_answer (String)>, "LLM_code": <LLM_returned_answer (String)>, "query_log": <completed_query_log>, "executeResult": <sqlcode_executed_result>}}
     - 400 Bad Request with JSON data: {'message': <error_message (String)>, 'code': 400}
     '''
     try:
         data = request.get_json()
-        ans, code, log = llm_exec.exec(data["demand"], data["domain"])
+        ans, out_code, log, executeResult = llm_exec.exec(data["demand"], data["domain"])
     except Exception as e:
-        return jsonify({'message': e, 'code': 400}),
-    return jsonify({'message': 'ok', 'code': 200, 'data': {"llmAnswer": ans, "llmCode": code, "queryLog": log}})
+        return jsonify({'message': e, 'code': 500}),
+    return jsonify({'message': 'ok', 'code': 200, 'data': {"llmAnswer": ans, "llmCode": out_code, "queryLog": log, "executeResult": executeResult}})
     
 
 if __name__ == '__main__':

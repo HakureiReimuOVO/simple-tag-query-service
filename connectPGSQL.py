@@ -154,7 +154,7 @@ class c2pg():
     def retry(max_retries):
         '''
         装饰器函数, 在捕捉到DatabaseError异常后commit一次后再重试
-        如果还是异常则打印错误并退出.
+        如果还是异常则返回错误.
         '''
         def decorator(func):
             def wrapper(self, *args, **kwargs):
@@ -171,7 +171,7 @@ class c2pg():
                             retry_count += 1
                         else:
                             # print("max retries reached, exit.")
-                            exit(1)
+                            raise e
                 return result
             return wrapper
         return decorator
@@ -187,7 +187,7 @@ class c2pg():
             {"host": "124.222.140.214", "port": "5666", "database": "data_management", "user": "postgres", "password": "123qweasd",}]
 
     @retry(max_retries=1)
-    def connect(self, param_idx : int = 0):
+    def connect(self, param_idx : int = 1):
         """ Connect to the PostgreSQL database server """
         # connect to the PostgreSQL server
         # print('Connecting to the PostgreSQL database...')
@@ -209,17 +209,17 @@ WHERE table_schema = 'public';'''
         cur = self.conn.cursor()
         cur.execute(check_statement_1)
         schema = cur.fetchall()
-        check_statement_2 = '''SELECT column_name, data_type, character_maximum_length, is_nullable
-FROM information_schema.columns
-WHERE table_schema = 'public';'''
-        cur = self.conn.cursor()
-        cur.execute(check_statement_2)
-        schema_info = cur.fetchall()
         res = []
         for idx in range(len(schema)):
             name = schema[idx][0]
-            info = tuple(str(_) for _ in schema_info[idx])
-            res.append(str(name) + ": " + ", ".join(info)) 
+            check_statement_2 = "SELECT column_name, data_type, character_maximum_length, is_nullable\nFROM information_schema.columns\nWHERE table_schema = 'public' and table_name = '" + name + "';"
+            cur = self.conn.cursor()
+            cur.execute(check_statement_2)
+            schema_info = cur.fetchall()
+            for col_idx in range(len(schema_info)):
+                info = tuple(str(_) for _ in schema_info[col_idx])
+                res.append(str(name) + ": " + ", ".join(info)) 
+            res.append('\n')
         return ", \n".join(res)
     
     @retry(max_retries=1)
@@ -235,7 +235,6 @@ if __name__ == '__main__':
     pgsql_test()
     a = c2pg(1)
     b = a.table_check()
-    c = a.query_check(statement='''SELECT table_name, column_name, data_type, character_maximum_length, is_nullable
-FROM information_schema.columns
-WHERE table_schema = 'public';''')
+    c = a.query_check(statement='SELECT AVG(FuelConsumption) AS average_carbon_emission\nFROM ship_engine_status')
+    print(c)
     # print(str(b)+'\n'+str(c))
